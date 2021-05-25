@@ -5,11 +5,18 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
-public class UserDetailsImpl implements UserDetails {
-    private Long id;
-    private String username;
-    private String password;
-    private String role;
+public class UserDetailsImpl extends User implements UserDetails {
+
+    public UserDetailsImpl() {
+
+    }
+
+    public UserDetailsImpl(User u) {
+        this.setId(u.getId());
+        this.setUsername(u.getUsername());
+        this.setRole(u.getRole());
+        this.setPassword(u.getPassword());
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -18,12 +25,12 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public String getPassword() {
-        return this.password;
+        return this.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return this.username;
+        return this.getUsername();
     }
 
     @Override
