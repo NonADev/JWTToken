@@ -4,11 +4,14 @@ import com.fatec.zl.jwtauth.application.configs.JWTUtil;
 import com.fatec.zl.jwtauth.application.configs.SecurityConfig;
 import com.fatec.zl.jwtauth.domain.interfaces.UserDetailService;
 import com.fatec.zl.jwtauth.domain.models.User;
+import com.fatec.zl.jwtauth.domain.models.UserDetailsImpl;
 import com.fatec.zl.jwtauth.domain.models.UsuarioCredenciais;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -25,10 +28,15 @@ public class LoginController {
     @Autowired
     private JWTUtil jwtUtil;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody UsuarioCredenciais usuarioCredenciais) {
         try {
-            return ResponseEntity.ok().build();
+            UsernamePasswordAuthenticationToken jwt = new UsernamePasswordAuthenticationToken(usuarioCredenciais.getUsername(), usuarioCredenciais.getPassword());
+            UserDetails u = userDetailService.loadUserByUsername(usuarioCredenciais.getUsername());
+            return ResponseEntity.ok(jwtUtil.generateToken(u));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new Error(e.getMessage()));
         }
@@ -60,7 +68,7 @@ public class LoginController {
     public ResponseEntity<?> ping(@RequestParam(value = "password", required = false) String password) {
         try {
             if (password != null)
-                System.out.println(new SecurityConfig().passwordEncoder().encode(password));
+                System.out.println(passwordEncoder.encode(password));
             return ResponseEntity.ok(System.currentTimeMillis());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new Error(e.getMessage()));
