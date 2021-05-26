@@ -12,15 +12,15 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
-public class JwtRequestFilter extends OncePerRequestFilter {
+public class JwtRequestFilter /*extends OncePerRequestFilter*/ {
     @Autowired
     JWTUtil jwtUtil;
 
     @Autowired
     UserDetailService userDetailService;
 
-    @Override
+    /*@Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
 
-    }
+    }*/
 }

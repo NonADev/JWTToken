@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import com.fatec.zl.jwtauth.domain.models.User;
 import com.fatec.zl.jwtauth.domain.models.UserDetailsImpl;
+
 @Service
 public class UserDetailServiceImpl implements UserDetailService {
     @Autowired
