@@ -16,10 +16,7 @@ public class UserDetailsImpl implements UserDetails {
     }
 
     public UserDetailsImpl(User u) {
-        user.setId(u.getId());
-        user.setUsername(u.getUsername());
-        user.setRole(u.getRole());
-        user.setPassword(u.getPassword());
+        this.user = u;
     }
 
     @Override
