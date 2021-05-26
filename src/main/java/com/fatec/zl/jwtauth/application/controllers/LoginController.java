@@ -3,6 +3,7 @@ package com.fatec.zl.jwtauth.application.controllers;
 import com.fatec.zl.jwtauth.application.configs.JWTUtil;
 import com.fatec.zl.jwtauth.application.configs.SecurityConfig;
 import com.fatec.zl.jwtauth.domain.interfaces.UserDetailService;
+import com.fatec.zl.jwtauth.domain.models.User;
 import com.fatec.zl.jwtauth.domain.models.UsuarioCredenciais;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -46,11 +47,20 @@ public class LoginController {
         }
     }
 
+    @PostMapping("/register")
+    public ResponseEntity<?> registrarUser(@RequestBody User user) {
+        try {
+            return ResponseEntity.ok(userDetailService.insertUser(user));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new Error(e.getMessage()));
+        }
+    }
+
     @GetMapping("/ping")
     public ResponseEntity<?> ping(@RequestParam(value = "password", required = false) String password) {
         try {
             if (password != null)
-                System.out.println(password);
+                System.out.println(new SecurityConfig().passwordEncoder().encode(password));
             return ResponseEntity.ok(System.currentTimeMillis());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new Error(e.getMessage()));
